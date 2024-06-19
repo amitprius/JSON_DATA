@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI App</title>
+</head>
+<body>
+    <h1>Machine Learning RESTful API</h1>
+
+    <form id="predictionForm">
+        <div>
+            <label for="inputData1">Input 1:</label>
+            <input type="text" id="inputData1" placeholder="Enter data">
+        </div>
+        <div>
+            <label for="inputData2">Input 2:</label>
+            <input type="text" id="inputData2" placeholder="Enter data">
+        </div>
+        <!-- Add more input fields as needed -->
+
+        <button type="button" onclick="makePrediction()">Make Prediction</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        function makePrediction() {
+            const inputData1 = document.getElementById('inputData1').value;
+            const inputData2 = document.getElementById('inputData2').value;
+            // Add more input data as needed
+
+            const inputArray = [inputData1, inputData2];  // Add more input values to this array
+
+            // Send a JSON request to Flask
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ "inputs": inputArray }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the result on the HTML page
+                document.getElementById('result').innerText = 'Prediction: ' + data.prediction;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerText = 'Error occurred during prediction.';
+            });
+        }
+    </script>
+</body>
+</html>
